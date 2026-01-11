@@ -1,3 +1,9 @@
+/* This file is:
+- A MongoDB connection manager
+- Written using the official MongoDB Node.js driver
+- Implemented as a singleton (one shared database connection)
+-  Designed to be initialized once at server startup
+ */
 import { MongoClient } from "mongodb";
 import dotenv from "dotenv";
 dotenv.config();
