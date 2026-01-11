@@ -286,8 +286,6 @@ export function registerAuthModule(container: Container) {
 - Forgetting `inSingletonScope()` → Multiple instances, unexpected behavior.
 - Wrong Symbol → DI fails, `undefined` injected.
 
----
-
 This setup allows:
 
 - Separation of concerns
@@ -295,3 +293,44 @@ This setup allows:
 - Auth services using Firebase Admin
 - Type safety via interfaces
 - Easy extension with multiple implementations
+
+---
+
+# Flow Summary
+
+```scss
+Global TYPES Registry (TYPES.AuthService)
+            │
+            ▼
+     Module Container (registerAuthModule)
+            │
+            ▼
+      AuthController (injects AuthService)
+            │
+            ▼
+      AuthService (implements IAuthService)
+            │
+            ▼
+         Firebase Admin
+      (verify token, get user)
+```
+
+### Real-World Example
+
+- `Global TYPES` → Company HR system catalog: lists all positions.
+
+- `Module Container` → Department HR: assigns employee to a position.
+
+- `Controller` → Front desk receptionist: receives badge and requests verification.
+
+- `AuthService` → Security guard: checks the badge and provides access info.
+
+- `Firebase` → Corporate database: holds actual employee info.
+
+### ✅ Key Notes
+
+- If you forget `@injectable()` → DI fails, you'll get `No matching bindings found.`
+
+- If you forget `.bind().to()` in container → Controller won’t receive the service, runtime error.
+
+- Interface ensures you can swap AuthService for another implementation (JWT, OAuth) without changing the controller.
